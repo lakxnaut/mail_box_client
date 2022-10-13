@@ -1,11 +1,13 @@
 import React, { useRef, useState } from 'react'
 import classes from './AuthPage.module.css'
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom'
 
 
 
 
 const AuthPage = () => {
+    const navigate = useNavigate();
 
     const emailRef = useRef()
     const passwordRef = useRef()
@@ -36,9 +38,12 @@ const AuthPage = () => {
         if (isSignupScreen) {
             url = "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyD5Gy8AvGi_pD5u6s_AN13PhZiSU4xKrhk"
         }
+        else {
+            url = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyD5Gy8AvGi_pD5u6s_AN13PhZiSU4xKrhk'
 
+        }
 
-        const resp = await fetch(url, {
+        const response = await fetch(url, {
             method: 'POST',
             body: JSON.stringify({
                 email: email,
@@ -49,17 +54,33 @@ const AuthPage = () => {
                 "Content-Type": "application/json"
             }
         })
-        const data = await resp.json();
-        console.log(data);
 
-        if (data.ok) {
-            console.log('done');
+
+        if (response.ok) {
+            console.log('hello');
+            setSpinner(true)
+            const data = await response.json()
+            const token = data.idToken;
+
+
+            localStorage.setItem('token', token)
+            // confirmEmail()
+
+
+            // navigate('/confirm')
+            // dispatch(authActions.login(token))
+
+            setSpinner(false)
+            navigate('/')
+
+
+        }
+        else {
+            const data = await response.json()
+            setError(data.error.message);
         }
 
-        // else { 
-        //     https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=[API_KEY]
 
-        // }
 
 
 
