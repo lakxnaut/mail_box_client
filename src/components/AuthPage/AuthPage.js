@@ -3,9 +3,6 @@ import classes from './AuthPage.module.css'
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom'
 
-
-
-
 const AuthPage = () => {
     const navigate = useNavigate();
 
@@ -22,9 +19,11 @@ const AuthPage = () => {
 
 
     async function submitForm(e) {
+        setSpinner(true)
+
         e.preventDefault();
         setErrorClass('');
-        const email = emailRef.current.value
+        const myemail = emailRef.current.value
         const password = passwordRef.current.value
         let url;
 
@@ -46,7 +45,7 @@ const AuthPage = () => {
         const response = await fetch(url, {
             method: 'POST',
             body: JSON.stringify({
-                email: email,
+                email: myemail,
                 password: password,
                 returnSecureToken: true
             }),
@@ -58,9 +57,13 @@ const AuthPage = () => {
 
         if (response.ok) {
             console.log('hello');
-            setSpinner(true)
             const data = await response.json()
             const token = data.idToken;
+
+            const email = `${myemail.replace(/\.|@/g, '')}`
+
+
+            localStorage.setItem('senderEmail', email)
 
 
             localStorage.setItem('token', token)
@@ -71,14 +74,17 @@ const AuthPage = () => {
             // dispatch(authActions.login(token))
 
             setSpinner(false)
-            navigate('/')
+
+            navigate('/mail')
 
 
         }
         else {
             const data = await response.json()
             setError(data.error.message);
+
         }
+        setSpinner(false)
 
 
 
@@ -119,20 +125,11 @@ const AuthPage = () => {
 
 
 
-
-
-
-
                 </div>
             </form>
 
-
-
-
             <button onClick={toggleSignup} className={classes.loginButton}>{isSignupScreen ? 'Have an Account? Login' : 'Dont have an Acoount? Sign up'}</button>
             {spinner && <div className={classes.loader}></div>}
-
-
 
 
         </div>

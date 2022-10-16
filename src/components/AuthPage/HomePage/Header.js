@@ -4,7 +4,7 @@ import classes from './Header.module.css'
 const Header = () => {
     return (
         <div className={classes.Header}>
-            <div><h3>Welcome to Expense Tracker!!!</h3></div>
+            <div><h3>Welcome to Emailer!!!</h3></div>
 
         </div>
     )

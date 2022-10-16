@@ -11,6 +11,11 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
-/* .jodit-status-bar__item .jodit-status-bar__item-right {
+/* .jodit-status-bar {
+  display: none;
+  background-color: rgb(0, 0, 0);
+}
+
+.jodit-status-bar__item .jodit-status-bar__item-right {
   display: none;
 } */

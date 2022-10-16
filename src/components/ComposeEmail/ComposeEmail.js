@@ -3,24 +3,36 @@ import classes from './ComposeEmail.module.css'
 
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import JoditEditor from 'jodit-react';
+import { useNavigate } from 'react-router-dom'
 
 
 const ComposeEmail = () => {
-    const textRef = useRef();
+
+    const textRef = useRef(null);
+    const navigate = useNavigate()
     const emailRef = useRef()
     const subjectRef = useRef()
-    const [content, setContent] = useState();
+    const [content, setContent] = useState('');
 
     const config = {
-        placeholder: "Enter Email"
+        placeholder: "Enter Email",
+        buttons: ["bold", "italic", "underline", "link", "unlink", "source"]
     }
 
     async function sendEmailHandler() {
 
+        const senderEmail = localStorage.getItem('senderEmail')
+        const sendMailId = emailRef.current.value
 
-        const url = 'https://mail-box-client-58a60-default-rtdb.firebaseio.com/emailData.json';
+        const SendMailEndPoint = `${sendMailId.replace(/\.|@/g, '')}`
+        console.log(SendMailEndPoint);
+
+
+        const url = `https://mail-box-client-58a60-default-rtdb.firebaseio.com/emailData/${senderEmail}/sent.json`;
+
 
         const resp = await fetch(url, {
+
             method: 'POST',
             headers: {
 
@@ -32,10 +44,47 @@ const ComposeEmail = () => {
                 message: textRef.current.value
 
             })
-        })
+        }
+        )
 
-        const data = await resp.json()
-        console.log(data);
+        if (!resp.ok) {
+            console.log('error');
+
+
+        }
+
+        else {
+
+            const url = `https://mail-box-client-58a60-default-rtdb.firebaseio.com/emailData/${SendMailEndPoint}/received.json`;
+
+
+            const resp = await fetch(url, {
+
+                method: 'POST',
+                headers: {
+
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    sendingemail: emailRef.current.value,
+                    subject: subjectRef.current.value,
+                    message: textRef.current.value
+
+                })
+            }
+            )
+
+            if (!resp.ok) {
+                console.log('error');
+            }
+            else {
+                navigate('/mail')
+            }
+
+        }
+
+
+
 
     }
 
@@ -57,9 +106,12 @@ const ComposeEmail = () => {
                     config={config}
 
                     tabIndex={1} // tabIndex of textarea
-                    onChange={newContent => setContent(newContent)}
+                    onBlur={newContent => setContent(newContent)}
+                    onChange={newContent => { }}
                 />
             </div>
+
+            {content}
 
             <div className={classes.sendContainer}><button onClick={sendEmailHandler}>Send Mail</button></div>
 
