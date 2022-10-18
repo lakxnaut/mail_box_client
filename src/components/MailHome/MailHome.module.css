@@ -1,7 +1,7 @@
 .MailBodyContainer {
   display: flex;
   gap: 10px;
-  margin: 10px;
+  /* margin: 10px; */
 }
 
 .SideBar {
@@ -22,11 +22,20 @@
 }
 
 .SingleEmailBox {
-  margin: 10px;
+  padding: 10px;
   display: flex;
   padding-bottom: 10px;
   gap: 30px;
   border-bottom: 1px solid rgb(255, 183, 183);
+  align-items: center;
+}
+
+.SingleEmailBox:hover {
+  cursor: pointer;
+  background-color: rgb(255, 255, 255);
+  transform: scale(1.01);
+  border: 1px solid black;
+  box-shadow: 0 0 1px black;
 }
 
 .emailSubject {
@@ -41,4 +50,40 @@
   overflow: hidden;
   white-space: nowrap;
   width: 500px;
+}
+.sentMailTitle {
+  padding-top: 10px;
+  text-align: center;
+}
+
+.dltbtn {
+  background-color: red;
+}
+
+.newMessage {
+  height: 12px;
+  width: 12px;
+  background-color: rgb(61, 25, 226);
+  border-radius: 50%;
+  display: inline-block;
+  animation: fade 2s infinite;
+}
+
+.readMessage {
+  background-color: rgb(255, 255, 255);
+}
+
+@keyframes fade {
+  0% {
+    opacity: 0.2;
+  }
+  20% {
+    opacity: 0.5;
+  }
+  80% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 1;
+  }
 }

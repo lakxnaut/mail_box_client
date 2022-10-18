@@ -19,3 +19,17 @@ code {
 .jodit-status-bar__item .jodit-status-bar__item-right {
   display: none;
 } */
+
+button {
+  background-color: rgb(95, 95, 243);
+  border: none;
+  padding: 10px 22px;
+  margin: 10px;
+  border-radius: 6px;
+  color: white;
+  font-weight: 600;
+}
+
+button:hover {
+  cursor: pointer;
+}

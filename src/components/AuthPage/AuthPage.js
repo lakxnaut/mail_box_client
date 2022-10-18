@@ -60,6 +60,8 @@ const AuthPage = () => {
             const data = await response.json()
             const token = data.idToken;
 
+            localStorage.setItem('originalEmail', myemail)
+
             const email = `${myemail.replace(/\.|@/g, '')}`
 
 

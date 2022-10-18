@@ -39,7 +39,7 @@ const ComposeEmail = () => {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                sendingemail: emailRef.current.value,
+                emailTo: emailRef.current.value,
                 subject: subjectRef.current.value,
                 message: textRef.current.value
 
@@ -66,9 +66,10 @@ const ComposeEmail = () => {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    sendingemail: emailRef.current.value,
+                    emailFrom: emailRef.current.value,
                     subject: subjectRef.current.value,
-                    message: textRef.current.value
+                    message: textRef.current.value,
+                    isRead: false
 
                 })
             }
