@@ -17,51 +17,6 @@ const AllEmails = () => {
     // const sortByLatesreadMail = readMail.reverse()
     // const Datas = useSelector(state => state.mailData)
     const endpoint = localStorage.getItem('senderEmail');
-    const [clickedItems, setClickedItems] = useState([]);
-
-
-
-    // let readClass = `${classes.newMessage}`;
-
-
-
-
-    // console.log('hello');
-
-    // useEffect(() => {
-    //     const getInboxData = async function getData() {
-    //         const url = `https://mail-box-client-58a60-default-rtdb.firebaseio.com/emailData/${endpoint}/received.json`
-
-    //         const inboxData = []
-    //         const resp = axios(url)
-    //         const data = await resp.data;
-
-
-    //         for (let item in data) {
-
-    //             inboxData.push({
-    //                 senderEmail: data[item].senderemail,
-    //                 senderDescription: data[item].message,
-    //                 senderSubject: data[item].subject,
-    //                 senderId: item,
-    //                 isRead: data[item].isRead
-
-    //             })
-
-    //             // console.log(inboxData[0].isRead);
-
-
-    //         }
-
-    //         dispatch(mailDataAction.getInboxData(inboxData))
-
-
-    //     }
-
-    //     getInboxData()
-    //     console.log('hello');
-    // }, [dispatch])
-
 
 
 
@@ -77,7 +32,7 @@ const AllEmails = () => {
                 for (let item in data) {
 
                     inboxData.push({
-                        emailFrom: data[item].emailFrom,
+                        email: data[item].email,
                         message: data[item].message,
                         subject: data[item].subject,
                         senderId: item,
@@ -95,11 +50,6 @@ const AllEmails = () => {
 
 
             })
-
-
-
-            // console.log('hello');
-
 
 
 
@@ -124,35 +74,8 @@ const AllEmails = () => {
         }
 
 
-
-        // console.log(mail.isRead);
-
-        // dispatch(mailDataAction.isReadMail(mail.senderId))
-        // console.log(mail.isRead);
-
-        // const isReadMail = readMail.map(item => {
-        //     return (
-        //         item.senderId === mail.senderId
-
-        //     )
-        // })
-
-        // if (isReadMail.isRead) {
-
-        //     readClass = `${classes.readMessage}`
-
-
-        // }
-        // else {
-        //     readClass = `${classes.newMessage}`
-
-
-        // }
-
-
-
         axios.put(`https://mail-box-client-58a60-default-rtdb.firebaseio.com/emailData/${endpoint}/received/${mail.senderId}.json`, {
-            emailFrom: mail.emailFrom,
+            email: mail.email,
             message: mail.message,
             subject: mail.subject,
 
@@ -170,7 +93,7 @@ const AllEmails = () => {
 
     function deleteHanlder(id) {
         console.log(id);
-        dispatch(mailDataAction.deleteEmail(id))
+        dispatch(mailDataAction.deleteFromInbox(id))
 
         axios.delete(`https://mail-box-client-58a60-default-rtdb.firebaseio.com/emailData/${endpoint}/received/${id}.json`)
             .then(res => console.log(res))
@@ -186,15 +109,15 @@ const AllEmails = () => {
 
             {sortByLatest.map((mail, i) => {
 
-                return (<div key={mail.senderId} onClick={() => { mailHandler(mail) }} className={classes.SingleEmailBox}>
+                return (<div key={mail.senderId} className={classes.SingleEmailBox}>
                     <div style={{
                         height: !sortByLatest[i].isRead ? '12px' : '',
                         width: !sortByLatest[i].isRead ? '12px' : '',
                         backgroundColor: !sortByLatest[i].isRead ? `rgba(64, 107, 169, 1)` : 'white'
 
                     }}></div>
-                    <div className={classes.emailSubject}> {mail.subject}</div>
-                    <div className={classes.message}>{mail.senderDescription}</div>
+                    <div onClick={() => { mailHandler(mail) }} className={classes.emailSubject}> {mail.subject}</div>
+                    <div className={classes.message}>{mail.message}</div>
                     <div><button onClick={() => { deleteHanlder(mail.senderId) }} className={classes.dltbtn}>Delete</button></div>
                 </div>)
 

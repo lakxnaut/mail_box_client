@@ -12,6 +12,8 @@ const SentMail = () => {
     const dispatch = useDispatch()
     const sentData = useSelector(state => state.mailData.outBox)
     const sortByLatest = [...sentData].reverse()
+    const endpoint = localStorage.getItem('senderEmail');
+
 
     console.log('hello');
 
@@ -24,14 +26,15 @@ const SentMail = () => {
         const outboxData = []
         const resp = await axios(url)
         const data = await resp.data;
+        // console.log(data);
 
 
         for (let item in data) {
 
             outboxData.push({
-                senderEmail: data[item].sendingemail,
-                senderDescription: data[item].message,
-                senderSubject: data[item].subject,
+                email: data[item].email,
+                message: data[item].message,
+                subject: data[item].subject,
                 senderId: item
 
 
@@ -42,6 +45,7 @@ const SentMail = () => {
         }
 
         dispatch(mailDataAction.getoutBoxData(outboxData))
+        console.log(outboxData);
 
 
     }
@@ -52,7 +56,25 @@ const SentMail = () => {
         console.log('hello');
     }, [])
 
-    console.log(sortByLatest);
+    // console.log(sortByLatest);
+
+    function singleMailHandler(mail) {
+        // console.log(mail);
+
+
+
+        navigate('/mail/single', { state: mail })
+    }
+
+    function deleteHanlder(id) {
+        // console.log(id);
+        dispatch(mailDataAction.deleteFromOutbox(id))
+
+        axios.delete(`https://mail-box-client-58a60-default-rtdb.firebaseio.com/emailData/${endpoint}/sent/${id}.json`)
+            .then(res => console.log(res))
+
+
+    }
 
     return (
         <div className={classes.AllEmails}>
@@ -62,9 +84,9 @@ const SentMail = () => {
                 return (
                     <div key={item.senderId} className={classes.SingleEmailBox}>
 
-                        <div className={classes.emailSubject}> {item.senderSubject}</div>
-                        <div className={classes.emailDescription}>{item.senderDescription}</div>
-                        <div><button style={{ backgroundColor: 'red' }}>Delete</button></div>
+                        <div onClick={() => { singleMailHandler(item) }} className={classes.emailSubject}> {item.subject}</div>
+                        <div className={classes.emailDescription}>{item.message}</div>
+                        <div><button onClick={() => { deleteHanlder(item.senderId) }} style={{ backgroundColor: 'red' }}>Delete</button></div>
 
 
                     </div>

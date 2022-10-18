@@ -16,13 +16,27 @@ const mailDataSlice = createSlice({
             state.outBox = action.payload
 
         },
-        deleteEmail(state, action) {
+        deleteFromInbox(state, action) {
             const deleteMailId = action.payload
 
             // console.log(deleteMailId);
 
 
             state.inboxData = state.inboxData.filter(item => item.senderId !== deleteMailId)
+
+            // console.log(state.inboxData.senderId);
+
+
+
+        },
+
+        deleteFromOutbox(state, action) {
+            const deleteMailId = action.payload
+
+            // console.log(deleteMailId);
+
+
+            state.outBox = state.outBox.filter(item => item.senderId !== deleteMailId)
 
             // console.log(state.inboxData.senderId);
 

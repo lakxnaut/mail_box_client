@@ -7,14 +7,14 @@ import React from 'react'
 const SingleMailInbox = (props) => {
     const navigate = useNavigate()
 
-    const { state, title } = useLocation();
+    const { state } = useLocation();
 
-    console.log(title);
+
     return (
         <div className={classes.SingleMailInbox}>
-            <div><h1>Inbox</h1></div>
+            <div> </div>
             <div>Subject : {state.subject}</div>
-            <div>From: {state.emailFrom}</div>
+            <div>From: {state.email}</div>
 
             <div>message: {state.message}</div>
 
