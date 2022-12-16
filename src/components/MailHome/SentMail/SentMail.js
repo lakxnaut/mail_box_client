@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom'
 
 import React, { useEffect } from 'react'
 import { mailDataAction } from '../../store/maildataSlice'
+import SideBar from '../SideBar'
 
 const SentMail = () => {
     const navigate = useNavigate()
@@ -63,7 +64,7 @@ const SentMail = () => {
 
 
 
-        navigate('/mail/single', { state: mail })
+        navigate('/single', { state: mail })
     }
 
     function deleteHanlder(id) {
@@ -78,6 +79,7 @@ const SentMail = () => {
 
     return (
         <div className={classes.AllEmails}>
+
             <div className={classes.sentMailTitle}><p>Sent Mails</p></div>
 
             {sortByLatest.map(item => {
@@ -86,14 +88,14 @@ const SentMail = () => {
 
                         <div onClick={() => { singleMailHandler(item) }} className={classes.emailSubject}> {item.subject}</div>
                         <div className={classes.emailDescription}>{item.message}</div>
-                        <div><button onClick={() => { deleteHanlder(item.senderId) }} style={{ backgroundColor: 'red' }}>Delete</button></div>
+                        <div className={classes.deletebtnContainer}><button onClick={() => { deleteHanlder(item.senderId) }} className={classes.dltbtn}>Delete</button></div>
 
 
                     </div>
                 )
             })}
 
-            <div className={classes.sendContainer}><button onClick={() => navigate(-1)}>Back to Inbox</button></div>
+
 
 
         </div>

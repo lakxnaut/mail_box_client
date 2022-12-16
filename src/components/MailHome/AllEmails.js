@@ -3,12 +3,14 @@ import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux/es/exports';
 import { mailDataAction } from '../store/maildataSlice';
 import { useNavigate } from 'react-router-dom'
+import { Markup } from 'interweave';
+
 
 
 
 import React, { useEffect, useState } from 'react'
 
-const AllEmails = () => {
+const AllEmails = (props) => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const Data = useSelector(state => state.mailData.inboxData)
@@ -53,10 +55,10 @@ const AllEmails = () => {
 
 
 
-        }, 2000)
+        }, 1000)
 
         // getInboxData()
-        console.log('hello');
+        // console.log('hello');
         return () => clearInterval(getInboxData);
     }, [dispatch])
 
@@ -68,7 +70,7 @@ const AllEmails = () => {
     function mailHandler(mail) {
         console.log(mail);
         if (mail.isRead) {
-            navigate('/mail/single', { state: mail })
+            navigate('/single', { state: mail })
             return;
 
         }
@@ -84,7 +86,8 @@ const AllEmails = () => {
             .then(res => console.log(res))
 
 
-        navigate('/mail/single', { state: mail })
+
+        navigate('/single', { state: { ...mail, from: 'From:' } })
 
 
 
@@ -106,6 +109,7 @@ const AllEmails = () => {
 
     return (
         <div className={classes.AllEmails}>
+            <div className={classes.sentMailTitle}><p>Inbox</p></div>
 
             {sortByLatest.map((mail, i) => {
 
@@ -113,12 +117,15 @@ const AllEmails = () => {
                     <div style={{
                         height: !sortByLatest[i].isRead ? '12px' : '',
                         width: !sortByLatest[i].isRead ? '12px' : '',
+                        borderRadius: !sortByLatest[i].isRead ? '12px' : '',
                         backgroundColor: !sortByLatest[i].isRead ? `rgba(64, 107, 169, 1)` : 'white'
 
                     }}></div>
-                    <div onClick={() => { mailHandler(mail) }} className={classes.emailSubject}> {mail.subject}</div>
-                    <div className={classes.message}>{mail.message}</div>
-                    <div><button onClick={() => { deleteHanlder(mail.senderId) }} className={classes.dltbtn}>Delete</button></div>
+                    <div onClick={() => { mailHandler(mail) }} className={classes.emailSubject}> <Markup content={mail.subject} /></div>
+                    <div className={classes.message}>
+                        <Markup content={mail.message} />
+                    </div>
+                    <div className={classes.deletebtnContainer}><button onClick={() => { deleteHanlder(mail.senderId) }} className={classes.dltbtn}>Delete</button></div>
                 </div>)
 
 

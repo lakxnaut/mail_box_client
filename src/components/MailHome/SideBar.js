@@ -1,26 +1,42 @@
-import classes from './MailHome.module.css'
+import classes from './SideBar.module.css'
+
 
 
 import React from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
 
-const SideBar = () => {
+const SideBar = (props) => {
+    const navigate = useNavigate()
     const unreadNumber = useSelector(state => state.mailData.Totalunreadmsg)
+
+
+    function inboxBtnHandler() {
+        props.toggle(true)
+    }
+    function sentBtnHandler() {
+        props.toggle(false)
+    }
 
 
     return (
         <div className={classes.SideBar}>
             <div className={classes.composeButton}
             >
-                <div><button style={{ backgroundColor: 'blue' }}>Inbox {unreadNumber}</button><p></p>
+                <div><button onClick={inboxBtnHandler} style={{ backgroundColor: 'blue' }}>Inbox {unreadNumber}</button>
                 </div>
-                <NavLink to='/compose'>
-                    <button>Compose</button></NavLink>
+                <div>
+                    <NavLink to='/compose'>
+                        <button>Compose</button></NavLink>
+                </div>
+                <div>
 
-                <NavLink to='/sentmail'>
-                    <button>Sent mails</button></NavLink>
+                    <button onClick={sentBtnHandler}>Sent</button>
+                </div>
+
+
+
             </div>
 
         </div>

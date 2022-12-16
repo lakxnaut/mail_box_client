@@ -3,8 +3,15 @@ import classes from './AuthPage.module.css'
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom'
 
+import { useDispatch, useSelector } from 'react-redux';
+import { authDetailSliceAction } from '../store/authDetailSlice';
+
 const AuthPage = () => {
     const navigate = useNavigate();
+    const isLoggedIn = useSelector(state => state.auth.isLoggedIn)
+
+    const dispatch = useDispatch()
+
 
     const emailRef = useRef()
     const passwordRef = useRef()
@@ -76,17 +83,23 @@ const AuthPage = () => {
             // dispatch(authActions.login(token))
 
             setSpinner(false)
+            dispatch(authDetailSliceAction.logIn(true))
+            navigate('/')
 
-            navigate('/mail')
 
 
         }
         else {
             const data = await response.json()
             setError(data.error.message);
+            console.log('error');
+            setSpinner(false)
+
 
         }
-        setSpinner(false)
+
+
+
 
 
 

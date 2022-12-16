@@ -79,7 +79,7 @@ const ComposeEmail = () => {
                 console.log('error');
             }
             else {
-                navigate('/mail')
+                navigate('/')
             }
 
         }
